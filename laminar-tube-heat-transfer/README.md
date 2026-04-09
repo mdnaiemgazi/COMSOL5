@@ -1,4 +1,3 @@
-
 # 🔥 Laminar Flow Heat Transfer in a Circular Tube – COMSOL Multiphysics® 5.x
 
 **COMSOL FEM | CFD | Heat Transfer | Thermal-Hydraulic Analysis**
@@ -64,27 +63,98 @@ This repository contains a complete COMSOL model that solves coupled fluid flow 
 
 ## 📊 Results & Visualization
 
-### 1. Temperature Field (2D Axisymmetric)
+### 1. COMSOL Model Interface
 
-*Figure: Color contour of temperature distribution along the tube length. Red = warmer fluid near inlet/wall; Blue = cooler regions.*
+![COMSOL Model Interface](images/object.png)
 
-The temperature field shows:
-- Thermal boundary layer development from the inlet
-- Gradual heating/cooling of the bulk fluid
-- Fully developed temperature profile near the outlet for longer tubes
+*Figure 1: COMSOL Multiphysics interface showing the 2D axisymmetric model geometry, mesh, and solution setup for laminar tube flow heat transfer.*
 
-### 2. Bulk Temperature vs. Axial Position
+---
 
-*Figure: Line plot of Tb(z) showing exponential approach to wall temperature (constant Tw case) or linear increase (constant qw case).*
+### 2. Velocity Field (2D Axisymmetric)
 
-### 3. Local Nusselt Number Along Tube
+![Velocity Magnitude Field](images/object_xy_plane.png)
 
-*Figure: Nu_D(z) from COMSOL (numerical) vs. theoretical Graetz solution correlation.*
+*Figure 2: Surface plot of velocity magnitude (m/s) in the xy-plane cross-section. The parabolic profile characteristic of fully developed laminar flow is clearly visible, with maximum velocity (~0.15 m/s) at the centerline and zero velocity at the walls.*
 
 **Key observations:**
-- Very high Nu_D near inlet (thermal entrance region)
-- Decay to asymptotic value (4.364 for constant Tw, 4.364 for constant qw in fully developed laminar flow)
-- Excellent agreement between simulation and correlation beyond z/D > 0.05
+- Fully developed velocity profile establishes within a short entrance length
+- Maximum velocity occurs at r = 0 (centerline)
+- No-slip condition satisfied at tube walls (r = b/2)
+- Axisymmetric nature captured correctly
+
+---
+
+### 3. Temperature Distribution
+
+![Temperature Profile](images/temp_profile.png)
+
+*Figure 3: Surface plot of temperature distribution (K) along the tube length. The color gradient shows thermal development from inlet temperature (283 K, dark blue) to higher temperatures (up to 314 K, red) due to wall heating.*
+
+**Key observations:**
+- Thermal boundary layer develops from the inlet
+- Gradual heating of bulk fluid along flow direction
+- Radial temperature gradient steepest near the wall
+- Nearly linear temperature rise in fully developed region
+
+---
+
+### 4. Developing and Fully Developed Flow Analysis
+
+![Developing and Fully Developed Flow](images/fully_developed_flow.png)
+
+*Figure 4: Theoretical framework for Nusselt number correlation in developing and fully developed laminar tube flow. The Gnielinski correlation accounts for both entrance effects and fully developed asymptotic behavior.*
+
+The local Nusselt number for the thermal entrance region is given by:
+
+$$
+\frac{\text{Nu}_1}{4.364 \left[ 1 + \left( \frac{\text{Gz}}{29.6} \right)^{2/3} \right]^{1/6}} = \left[ 1 + \left( \frac{\text{Gz}/19.04}{\left[ 1 + \left( \frac{\text{Pr}}{0.0207} \right)^{2/3} \right]^{1/2} \left[ 1 + \left( \frac{\text{Gz}}{29.6} \right)^{2/3} \right]} \right) \right]^{3/2}
+$$
+
+where Pr is the Prandtl number, and the Graetz number Gz is defined by:
+
+$$
+\text{Gz} = \frac{\pi}{4} \cdot \frac{\text{Re}_b \cdot \text{Pr} \cdot b}{z}
+$$
+
+with Re_b the Reynolds number associated with the tube diameter b.
+
+---
+
+### 5. Heat Transfer Coefficient Validation
+
+![Heat Transfer Coefficient Comparison](images/heat_transfer_coefficient.png)
+
+*Figure 5: Line graph comparing different methods for determining the local heat transfer coefficient along the tube length:*
+
+| Line | Description |
+|------|-------------|
+| 🔵 **4.36*k/b** | Fully developed flow assumption (constant Nu = 4.36) |
+| 🟢 **kmean/b** | Entry region Nusselt number correlation |
+| 🔴 **qw/(T-Tb)** | Numerical solution from COMSOL |
+
+**Key observations:**
+- At the inlet (z = 0), the numerical solution shows very high h(z) due to thin thermal boundary layer
+- All three methods converge to the same asymptotic value (4.36·k/b) in the fully developed region (z > 1.5 m)
+- Excellent agreement between the numerical solution and the entry region correlation
+- Entrance length ~ 0.5–1.0 m for these flow conditions
+
+---
+
+### 6. Fully Developed Flow Nusselt Number
+
+![Fully Developed Flow Correlation](images/to_determine_heat_transfer_coefficient.png)
+
+*Figure 6: Theoretical foundation for fully developed laminar flow heat transfer. For a tube with uniform surface heat flux, the Nusselt number approaches a constant value of 4.36 in the thermally fully developed region.*
+
+**Formula:**
+$$
+\text{Nu}_c = \frac{h D_h}{k}
+$$
+
+**For tube with uniform surface heat flux:** `Nu = 4.36` (constant)
+
+This asymptotic value serves as the validation benchmark for numerical simulations in the downstream region where thermal profiles become fully developed.
 
 ---
 
@@ -102,6 +172,14 @@ The temperature field shows:
 
 **Validation approach:**
 - Compare numerically computed `h(z) = qw/(Tw - Tb(z))` with correlation-based Nusselt number
+
+**Entrance vs. Fully Developed Regions:**
+
+| Region | Characteristics | Nu_D behavior |
+|--------|-----------------|---------------|
+| **Entrance (z < 0.5 m)** | Thin thermal boundary layer, steep temperature gradient | Very high (> 10) |
+| **Transition (0.5 < z < 1.5 m)** | Boundary layer grows, temperature gradient decreases | Decreasing from ~10 to ~4.36 |
+| **Fully Developed (z > 1.5 m)** | Temperature profile shape constant, increases linearly with z | Constant = 4.36 |
 
 ---
 
@@ -129,6 +207,18 @@ The temperature field shows:
 
 **Impact:** Predicts maximum component temperature, preventing thermal failure.
 
+### Application 3: Chemical Reactor Temperature Control
+
+**Problem:** Tubular reactors require maintaining specific temperature profiles for optimal reaction rates.
+
+**How this simulation applies:**
+- Wall temperature boundary → cooling/heating jacket
+- Bulk temperature profile → reaction rate distribution
+- Entrance effects → localized hotspots
+
+**Impact:** Prevents thermal runaway and improves product yield.
+
 ---
 
 ## 📁 Repository Contents
+
