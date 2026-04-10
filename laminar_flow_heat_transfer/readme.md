@@ -219,5 +219,14 @@ This asymptotic value serves as the validation benchmark for numerical simulatio
 **Impact:** Prevents thermal runaway and improves product yield.
 
 ---
+## 👨‍🔬 Author
 
-## 📁 Repository Contents
+**MD Naiem Gazi**  
+*Mechanical Engineering Graduate, Chittagong University of Engineering and Technology (CUET)*
+
+📧 **Email:** [mdnaiemgazi@outlook.com](mailto:mdnaiemgazi@outlook.com)  
+🌐 **Portfolio:** [https://mdnaiemgazi.github.io/portfolio/](https://mdnaiemgazi.github.io/portfolio/)  
+🐙 **GitHub:** [@mdnaiemgazi](https://github.com/mdnaiemgazi)  
+🔗 **LinkedIn:** [MD Naiem Gazi](https://www.linkedin.com/in/md-naiem-gazi-7186361b2/)
+
+---
